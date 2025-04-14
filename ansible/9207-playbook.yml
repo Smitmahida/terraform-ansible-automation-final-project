@@ -1,0 +1,8 @@
+- name: Configure SON Books VMs
+  hosts: all
+  become: yes
+  roles:
+    - profile-9207
+    - user-9207
+    - datadisk-9207
+    - webserver-9207

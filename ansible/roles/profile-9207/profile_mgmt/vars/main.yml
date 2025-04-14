@@ -1,0 +1,5 @@
+custom_group: devops
+custom_user: student
+user_shell: /bin/bash
+user_home: /home/student
+

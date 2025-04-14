@@ -1,0 +1,51 @@
+- name: Partition disk - Part 1 (4GB - XFS)
+  parted:
+    device: /dev/sdc
+    number: 1
+    state: present
+    part_start: 0%
+    part_end: 40%
+    fs_type: xfs
+
+- name: Partition disk - Part 2 (5GB - EXT4)
+  parted:
+    device: /dev/sdc
+    number: 2
+    state: present
+    part_start: 40%
+    part_end: 90%
+    fs_type: ext4
+
+- name: Create XFS filesystem
+  filesystem:
+    fstype: xfs
+    dev: /dev/sdc1
+
+- name: Create EXT4 filesystem
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdc2
+
+- name: Create mount points
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /part1
+    - /part2
+
+- name: Mount XFS partition on /part1
+  mount:
+    path: /part1
+    src: /dev/sdc1
+    fstype: xfs
+    opts: defaults
+    state: mounted
+
+- name: Mount EXT4 partition on /part2
+  mount:
+    path: /part2
+    src: /dev/sdc2
+    fstype: ext4
+    opts: defaults
+    state: mounted
